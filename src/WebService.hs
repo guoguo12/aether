@@ -21,7 +21,7 @@ queryToURI query = URI { uriScheme = "http:"
                        }
 
 queryHeaders :: [Header]
-queryHeaders = [mkHeader HdrUserAgent "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.69 Safari/537.36"]
+queryHeaders = [mkHeader HdrUserAgent "Aether 0.1 (https://github.com/guoguo12/aether)"]
 
 queryToRequest :: Query -> Request String
 queryToRequest query = Request { rqURI = queryToURI query
