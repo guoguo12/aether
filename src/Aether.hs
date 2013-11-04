@@ -94,6 +94,8 @@ summaryLines lines title
     results <- wikiRequest queries
     return $ extractBetween results "xml:space=\"preserve\">" "</extract>"
     
+-- | Returns a 'WikipediaPage' for the article with the given title.
+-- Errors are handled using 'Maybe' ('Nothing' is returned on error).
 page :: String -> IO (Maybe WikipediaPage)
 page title
   | isInvalidTitle title = return Nothing
@@ -109,7 +111,10 @@ page title
       content -> return . Just $ WikipediaPage title content timestamp queryURI
         where timestamp = head $ extractAllAttrValues results "timestamp"
               queryURI = show $ queriesToURI queries
-              
+
+-- | Returns information regarding Wikipedia's text license (CC BY-SA) and
+-- the license used by Aether (MIT).
 licenses :: String
-licenses = "The text of Wikipedia is available under the Creative Commons Attribution-ShareAlike 3.0 Unported License. \
+licenses = "The text of Wikipedia is available under the \
+           \Creative Commons Attribution-ShareAlike 3.0 Unported License. \
            \Aether is an open source library available under the MIT License."
