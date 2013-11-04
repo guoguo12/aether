@@ -53,6 +53,7 @@ suggest terms = do
                               , ("srsearch", terms)
                               , ("srinfo", "suggestion")
                               , ("srprop", "")
+                              , ("srlimit", "1")
                               ]
   results <- wikiRequest queries
   return $ extractAllAttrValues results "suggestion"
