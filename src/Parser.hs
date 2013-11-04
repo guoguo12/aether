@@ -3,7 +3,7 @@
               , trim
               ) where
 
-import Data.Text (pack, strip, unpack)  
+import Data.Text (pack, strip, unpack)
 import Text.Regex (matchRegex, mkRegex, mkRegexWithOpts, splitRegex)
 
 nonNull :: [String] -> [String]
@@ -13,7 +13,7 @@ trim :: String -> String
 trim = unpack . strip . pack
 
 stdRegex :: String -> String -> String
-stdRegex text regex = 
+stdRegex text regex =
   case matchRegex (mkRegexWithOpts regex False False) text of
     Nothing      -> ""
     Just matches -> head matches
