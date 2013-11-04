@@ -1,5 +1,5 @@
 ﻿module Parser ( extractBetween
-              , extractAll
+              , extractAllAttrValues
               , trim
               ) where
 
@@ -21,7 +21,7 @@ stdRegex text regex =
 extractBetween :: String -> String -> String -> String
 extractBetween text start end = stdRegex text $ start ++ "(.*)" ++ end
 
-extractAll :: String -> String -> [String]
-extractAll xml tag = nonNull $ map extract chunks where
-  extract = flip stdRegex (tag ++ "=\"(.*)\"")
-  chunks = splitRegex (mkRegex "<") xml
+extractAllAttrValues :: String -> String -> [String]
+extractAllAttrValues text attr = nonNull $ map extract chunks where
+  extract = flip stdRegex (attr ++ "=\"(.*)\"")
+  chunks = splitRegex (mkRegex "<") text

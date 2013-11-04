@@ -8,7 +8,7 @@ module Aether ( search
               , WikipediaPage(..)
               ) where        
 
-import Parser (extractBetween, extractAll, trim)
+import Parser (extractBetween, extractAllAttrValues, trim)
 import WebService (stdQueries, queriesToURI, wikiRequest)
 import WikipediaPage (isRedirect, WikipediaPage(..))
 
@@ -24,7 +24,7 @@ search terms = do
                               , ("srprop", "")
                               ]
   results <- wikiRequest queries
-  return $ extractAll results "title"
+  return $ extractAllAttrValues results "title"
 
 suggest :: String -> IO [String]
 suggest terms = do
@@ -34,7 +34,7 @@ suggest terms = do
                               , ("srprop", "")
                               ]
   results <- wikiRequest queries
-  return $ extractAll results "suggestion"
+  return $ extractAllAttrValues results "suggestion"
 
 random :: Int -> IO [String]
 random pages
@@ -45,7 +45,7 @@ random pages
                                 , ("rnlimit", show pages)
                                 ]
     results <- wikiRequest queries
-    return $ extractAll results "title"
+    return $ extractAllAttrValues results "title"
 
 summary :: String -> IO String
 summary title

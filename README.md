@@ -31,7 +31,7 @@ pg :: Maybe WikipediaPage
 ```
 
 Aether is designed to be simple and easy to use.
-Developers in need of a complete Haskell binding to MediaWiki API
+Developers in need of a complete Haskell binding to the MediaWiki API
 should consult the [mediawiki](http://hackage.haskell.org/package/mediawiki) package.
 
 Installation
