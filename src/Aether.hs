@@ -45,9 +45,9 @@ search terms = do
   results <- wikiRequest queries
   return $ extractAllAttrValues results "title"
 
--- | Returns a list of suggestions based on
--- the given search terms.
-suggest :: String -> IO [String]
+-- | Returns a suggestion based on the given search terms.
+-- Returns an empty string if no suggestion is available.
+suggest :: String -> IO String
 suggest terms = do
   let queries = stdQueries ++ [ ("list", "search")
                               , ("srsearch", terms)
@@ -56,8 +56,13 @@ suggest terms = do
                               , ("srlimit", "1")
                               ]
   results <- wikiRequest queries
-  return $ extractAllAttrValues results "suggestion"
+  let suggestions = extractAllAttrValues results "suggestion"
+  return $ if null suggestions then "" else head suggestions
 
+-- | Returns a list of random Wikipedia article titles.
+-- The given Int determines the length of the list; up to 10
+-- titles can be fetched at once. The returned list is guaranteed
+-- to contain no duplicate titles.
 random :: Int -> IO [String]
 random pages
   | pages <= 0 = return []
@@ -68,7 +73,7 @@ random pages
                                 ]
     results <- wikiRequest queries
     return $ extractAllAttrValues results "title"
-
+ 
 summary :: String -> IO String
 summary title
   | isInvalidTitle title = return ""
