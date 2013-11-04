@@ -9,7 +9,7 @@ module Aether ( search
               ) where        
 
 import Parser (extractBetween, extractAll, trim)
-import WebService (stdQueries, wikiRequest)
+import WebService (stdQueries, queriesToURI, wikiRequest)
 import WikipediaPage (isRedirect, WikipediaPage(..))
 
 -- TODO: Add additional tests for title validity
@@ -68,7 +68,8 @@ page title
                                 , ("rvlimit", "1")
                                 , ("titles", title)
                                 ]
+    let queryURI = show $ queriesToURI queries
     results <- wikiRequest queries
     case trim $ extractBetween results "xml:space=\"preserve\">" "</rev>" of
       ""      -> return Nothing
-      content -> return . Just $ WikipediaPage title content
+      content -> return . Just $ WikipediaPage title content queryURI
