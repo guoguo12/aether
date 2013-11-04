@@ -64,12 +64,13 @@ page title
   | isInvalidTitle title = return Nothing
   | otherwise = do
     let queries = stdQueries ++ [ ("prop", "revisions")
-                                , ("rvprop", "content")
+                                , ("rvprop", "content|timestamp")
                                 , ("rvlimit", "1")
                                 , ("titles", title)
                                 ]
-    let queryURI = show $ queriesToURI queries
     results <- wikiRequest queries
     case trim $ extractBetween results "xml:space=\"preserve\">" "</rev>" of
       ""      -> return Nothing
-      content -> return . Just $ WikipediaPage title content queryURI
+      content -> return . Just $ WikipediaPage title content timestamp queryURI
+        where timestamp = head $ extractAllAttrValues results "timestamp"
+              queryURI = show $ queriesToURI queries
