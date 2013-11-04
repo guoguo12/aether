@@ -5,7 +5,6 @@ module Aether ( search
               , random
               , summary
               , page
-              , WikipediaPage(..)
               ) where        
 
 import Parser (extractBetween, extractAllAttrValues, trim)
