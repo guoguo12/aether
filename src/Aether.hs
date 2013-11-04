@@ -21,6 +21,7 @@ module Aether ( licenses
               , suggest
               , random
               , summary
+              , summaryLines
               , page
               ) where
 
@@ -73,19 +74,26 @@ random pages
                                 ]
     results <- wikiRequest queries
     return $ extractAllAttrValues results "title"
- 
+
+-- | Returns a summary of the Wikipedia article with the given title.
+-- The summary will be about one line long.    
 summary :: String -> IO String
-summary title
+summary = summaryLines 1
+    
+-- | Returns a summary of the Wikipedia article with the given title.
+-- The given Int determines the maximum summary length, in lines.
+summaryLines :: Int -> String -> IO String    
+summaryLines lines title
   | isInvalidTitle title = return ""
   | otherwise = do
     let queries = stdQueries ++ [ ("prop", "extracts")
                                 , ("explaintext", "")
                                 , ("titles", title)
-                                , ("exsentences", "1")
+                                , ("exsentences", show lines)
                                 ]
     results <- wikiRequest queries
     return $ extractBetween results "xml:space=\"preserve\">" "</extract>"
-
+    
 page :: String -> IO (Maybe WikipediaPage)
 page title
   | isInvalidTitle title = return Nothing
