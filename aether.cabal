@@ -17,7 +17,8 @@ library
   hs-source-dirs:      src
   exposed-modules:     Aether
   other-modules:       Parser,
-                       WebService
+                       WebService,
+                       WikipediaPage
   build-depends:       base ==4.5.*,
                        HTTP,
                        network,
