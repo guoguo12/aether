@@ -7,7 +7,7 @@ import Data.List (isPrefixOf)
 -- TODO: Add additional WikipediaPage fields and functions
 data WikipediaPage = WikipediaPage { title :: String
                                    , content :: String
-                                   , timestamp :: String
+                                   , lastEdit :: String
                                    , queryURI :: String
                                    } deriving (Show)
 
