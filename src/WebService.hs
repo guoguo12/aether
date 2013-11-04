@@ -4,7 +4,7 @@ module WebService ( stdQueries
 
 import Network.URI (URI(..), URIAuth(..))
 import Network.HTTP (simpleHTTP)
-import Network.HTTP.Base (Request(..), RequestMethod(..), rspBody, urlEncodeVars)
+import Network.HTTP.Base (rspBody, urlEncodeVars, Request(..), RequestMethod(..))
 import Network.HTTP.Headers (mkHeader, Header, HeaderName(..))
 
 type Query = String
