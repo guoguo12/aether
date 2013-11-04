@@ -1,8 +1,8 @@
-module WebService ( donate
-                  , stdQueries
-                  , queriesToURI
-                  , wikiRequest
-                  ) where
+module Aether.WebService ( donate
+                         , stdQueries
+                         , queriesToURI
+                         , wikiRequest
+                         ) where
 
 import Control.Monad (void)                  
 import Network.URI (URI(..), URIAuth(..))

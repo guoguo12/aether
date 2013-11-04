@@ -25,9 +25,9 @@ module Aether ( licenses
               , page
               ) where
 
-import Parser (extractBetween, extractAllAttrValues, trim)
-import WebService (donate, stdQueries, queriesToURI, wikiRequest)
-import WikipediaPage (isRedirect, WikipediaPage(..))
+import Aether.Parser (extractBetween, extractAllAttrValues, trim)
+import Aether.WebService (donate, stdQueries, queriesToURI, wikiRequest)
+import Aether.WikipediaPage (isRedirect, WikipediaPage(..))
 
 -- TODO: Add additional tests for title validity
 -- | Tests if the given Wikipedia page title is invalid

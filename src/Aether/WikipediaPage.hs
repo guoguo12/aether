@@ -1,6 +1,6 @@
-module WikipediaPage ( isRedirect
-                     , WikipediaPage(..)
-                     ) where
+module Aether.WikipediaPage ( isRedirect
+                            , WikipediaPage(..)
+                            ) where
 
 import Data.List (isPrefixOf)
 

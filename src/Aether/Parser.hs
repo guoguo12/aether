@@ -1,7 +1,7 @@
-﻿module Parser ( extractBetween
-              , extractAllAttrValues
-              , trim
-              ) where
+﻿module Aether.Parser ( extractBetween
+                     , extractAllAttrValues
+                     , trim
+                     ) where
 
 import Data.Text (pack, strip, unpack)
 import Text.Regex (matchRegex, mkRegex, mkRegexWithOpts, splitRegex)
