@@ -23,5 +23,5 @@ extractBetween text start end = stdRegex text $ start ++ "(.*)" ++ end
 
 extractAllAttrValues :: String -> String -> [String]
 extractAllAttrValues text attr = nonNull $ map extract chunks where
-  extract = flip stdRegex (attr ++ "=\"(.*)\"")
+  extract = flip stdRegex (attr ++ "=\"([^\"]*)\"")
   chunks = splitRegex (mkRegex "<") text
