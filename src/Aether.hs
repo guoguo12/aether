@@ -68,7 +68,7 @@ page title
                                 , ("titles", title)
                                 ]
     results <- wikiRequest queries
-    case trim $ extractBetween results "xml:space=\"preserve\">" "</rev" of
+    case trim $ extractBetween results "xml:space=\"preserve\">" "</rev>" of
       ""      -> return Nothing
       content -> return . Just $ WikipediaPage title content
   
