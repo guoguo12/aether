@@ -10,7 +10,7 @@ module Aether ( search
 
 import Parser (extractBetween, extractAll, trim)
 import WebService (stdQueries, wikiRequest)
-import WikipediaPage (WikipediaPage(..))
+import WikipediaPage (isRedirect, WikipediaPage(..))
 
 -- TODO: Add additional tests for title validity
 isInvalidTitle :: String -> Bool
