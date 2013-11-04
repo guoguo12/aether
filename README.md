@@ -40,7 +40,7 @@ Installation
 After downloading/cloning the source repository,
 install Aether from the main directory using [cabal-install](http://www.haskell.org/haskellwiki/Cabal-Install):
 
-    $ cabal install aether.cabal
+    $ cabal install
 
 Contributing
 ------------
