@@ -1,5 +1,21 @@
--- TODO: Add documentation.
-
+-----------------------------------------------------------------------------
+-- |
+-- Module    : Aether
+-- Copyright : (c) Allen Guo 2013
+-- License   : MIT
+-- 
+-- Maintainer : Allen Guo <guoguo12@gmail.com>
+-- Stability  : alpha
+--
+-- The 'Aether' module provides an interface for fetching
+-- information from Wikipedia, a free online encyclopedia.
+-- Aether can be used to download articles, get search results,
+-- generate random article titles, and more.
+--
+-- Aether wraps around the MediaWiki API. Learn more at
+-- <http://www.mediawiki.org/wiki/API>.
+--
+-----------------------------------------------------------------------------
 module Aether ( licenses
               , search
               , suggest
@@ -13,9 +29,12 @@ import WebService (donate, stdQueries, queriesToURI, wikiRequest)
 import WikipediaPage (isRedirect, WikipediaPage(..))
 
 -- TODO: Add additional tests for title validity
+-- | Tests if the given Wikipedia page title is invalid
 isInvalidTitle :: String -> Bool
 isInvalidTitle = null
 
+-- | Returns a list of up to 10 Wikipedia search results
+-- based on the given search terms.
 search :: String -> IO [String]
 search terms = do
   let queries = stdQueries ++ [ ("list", "search")
@@ -26,6 +45,8 @@ search terms = do
   results <- wikiRequest queries
   return $ extractAllAttrValues results "title"
 
+-- | Returns a list of suggestions based on
+-- the given search terms.
 suggest :: String -> IO [String]
 suggest terms = do
   let queries = stdQueries ++ [ ("list", "search")
