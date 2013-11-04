@@ -5,10 +5,10 @@ module Aether ( search
               , random
               , summary
               , page
-              ) where        
+              ) where
 
 import Parser (extractBetween, extractAllAttrValues, trim)
-import WebService (stdQueries, queriesToURI, wikiRequest)
+import WebService (donate, stdQueries, queriesToURI, wikiRequest)
 import WikipediaPage (isRedirect, WikipediaPage(..))
 
 -- TODO: Add additional tests for title validity

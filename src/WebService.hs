@@ -1,12 +1,15 @@
-module WebService ( stdQueries
+module WebService ( donate
+                  , stdQueries
                   , queriesToURI
                   , wikiRequest
                   ) where
 
+import Control.Monad (void)                  
 import Network.URI (URI(..), URIAuth(..))
 import Network.HTTP (simpleHTTP)
 import Network.HTTP.Base (rspBody, urlEncodeVars, Request(..), RequestMethod(..))
 import Network.HTTP.Headers (mkHeader, Header, HeaderName(..))
+import System.Cmd (system)
 
 stdQueries :: [(String, String)]
 stdQueries = [("format", "xml"), ("action", "query")]
@@ -36,3 +39,8 @@ wikiRequest queries = do
   case result of
     Left _         -> return ""
     Right response -> return $ rspBody response
+    
+-- Works on Windows only, currently.
+donate :: IO ()
+donate = do
+  void $ system "explorer.exe http://donate.wikimedia.org"
