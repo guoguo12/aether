@@ -4,7 +4,7 @@
 name:                aether
 version:             0.1.0.0
 synopsis:            Simple API for finding and accessing data from Wikipedia
-homepage:            Github
+homepage:            http://github.com/guoguo12/aether
 license:             MIT
 license-file:        LICENSE
 author:              Allen Guo
