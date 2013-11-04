@@ -1,6 +1,7 @@
 -- TODO: Add documentation.
 
-module Aether ( search
+module Aether ( licenses
+              , search
               , suggest
               , random
               , summary
@@ -73,3 +74,7 @@ page title
       content -> return . Just $ WikipediaPage title content timestamp queryURI
         where timestamp = head $ extractAllAttrValues results "timestamp"
               queryURI = show $ queriesToURI queries
+              
+licenses :: String
+licenses = "The text of Wikipedia is available under the Creative Commons Attribution-ShareAlike 3.0 Unported License. \
+           \Aether is an open source library available under the MIT License."
