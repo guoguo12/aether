@@ -15,12 +15,13 @@ cabal-version:       >=1.8
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Aether
-  other-modules:       Parser,
-                       WebService,
-                       WikipediaPage
+  exposed-modules:     Aether,
+                       Aether.WikipediaPage
+  other-modules:       Aether.Parser,
+                       Aether.WebService
   build-depends:       base ==4.5.*,
                        HTTP,
                        network,
+                       process,
                        regex-compat,
                        text
