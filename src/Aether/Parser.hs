@@ -7,9 +7,8 @@
 -- Maintainer : Allen Guo <guoguo12@gmail.com>
 -- Stability  : alpha
 --
--- The 'Parser' module contains several simple XML-parsing
--- functions that use regular expressions, as well as other
--- text utility functions.
+-- This module contains several simple XML-parsing regex
+-- functions, as well as other text utility functions.
 --
 -----------------------------------------------------------------------------
 module Aether.Parser ( extractBetween
