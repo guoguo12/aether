@@ -43,7 +43,7 @@ extractBetween :: String -> String -> String -> String
 extractBetween text start end = stdRegex text $ start ++ "(.*)" ++ end
 
 -- | @extractAllAttrValues text attr@, where @text@ is a XML string, returns
--- the values of all instsances of the XML attribute @attr@.
+-- the values of all instances of the XML attribute @attr@.
 extractAllAttrValues :: String -> String -> [String]
 extractAllAttrValues text attr = nonNull $ map extract chunks where
   extract = flip stdRegex (attr ++ "=\"([^\"]*)\"")

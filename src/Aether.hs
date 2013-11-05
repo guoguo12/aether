@@ -7,7 +7,7 @@
 -- Maintainer : Allen Guo <guoguo12@gmail.com>
 -- Stability  : alpha
 --
--- The 'Aether' module provides an interface for fetching
+-- Aether provides a high-level interface for fetching
 -- information from Wikipedia, a free online encyclopedia.
 -- Aether can be used to download articles, get search results,
 -- generate random article titles, and more.

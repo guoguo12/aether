@@ -12,7 +12,7 @@
 -- <http://www.mediawiki.org/wiki/API>.
 --
 -- Note that arguments for API queries are represented as key-value pairs
--- of type '[(String, String)]'.
+-- of type @[(String, String)]@.
 --
 -----------------------------------------------------------------------------
 module Aether.WebService ( donate

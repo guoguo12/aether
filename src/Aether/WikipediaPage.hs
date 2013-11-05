@@ -24,6 +24,6 @@ data WikipediaPage = WikipediaPage { title :: String -- ^ Page title (with names
                                    , queryURI :: String -- ^ URI of the API query used.
                                    } deriving (Show)
 
--- | Returns if the given 'WikipediaPage' is a hard redirect.
+-- | Returns if the given 'WikipediaPage' is a hard redirect
 isRedirect :: WikipediaPage -> Bool
 isRedirect = isPrefixOf "#REDIRECT [[" . content
