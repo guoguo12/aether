@@ -12,22 +12,16 @@ Overview
 ```Haskell
 ghci> import Aether
 
-ghci> search "Git"
-["Nashim","Git","GITS","Git (software)","GitHub","Guitar","Georgia Institute of
-Technology","Digestion","Git (slang)","Human gastrointestinal tract"]
+ghci> summary "Blue"
+"Blue is the colour of the clear sky and the deep sea. "
+
+ghci> search "entropy law"
+["Second law of thermodynamics","Entropy","Laws of thermodynamics","Thermodynami
+cs","Non-equilibrium thermodynamics","Nicholas Georgescu-Roegen","Statistical me
+chanics","Third law of thermodynamics","Ludwig Boltzmann","Fluctuation theorem"]
 
 ghci> suggest "Pysics"
 ["Physics"]
-
-ghci> summary "Hydrogen"
-"Hydrogen is a chemical element with chemical symbol H and atomic number 1. With
- an atomic weight of 1.00794 u, hydrogen is the lightest element and its monatom
-ic form (H) is the most abundant chemical substance, constituting roughly 75% of
- the Universe's baryonic mass. "
-
-ghci> pg <- page "Haskell (programming language)"
-ghci> :type pg
-pg :: Maybe WikipediaPage
 ```
 
 Aether is designed to be simple and easy to use.
