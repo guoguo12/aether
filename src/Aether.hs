@@ -61,7 +61,7 @@ suggest terms = do
   return $ if null suggestions then "" else head suggestions
 
 -- | Returns a list of random Wikipedia article titles.
--- The given Int determines the length of the list; up to 10
+-- The given 'Int' determines the length of the list; up to 10
 -- titles can be fetched at once. The returned list is guaranteed
 -- to contain no duplicate titles.
 random :: Int -> IO [String]
@@ -81,7 +81,7 @@ summary :: String -> IO String
 summary = summaryLines 1
     
 -- | Returns a summary of the Wikipedia article with the given title.
--- The given Int determines the maximum summary length, in lines.
+-- The given 'Int' determines the maximum summary length, in lines.
 summaryLines :: Int -> String -> IO String    
 summaryLines lines title
   | isInvalidTitle title = return ""
