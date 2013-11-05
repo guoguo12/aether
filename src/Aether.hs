@@ -23,6 +23,7 @@ module Aether ( licenses
               , summary
               , summaryLines
               , page
+              , pageMaybe
               ) where
 
 import Aether.Parser (extractBetween, extractAllAttrValues, trim)
@@ -93,11 +94,21 @@ summaryLines lines title
                                 ]
     results <- wikiRequest queries
     return $ extractBetween results "xml:space=\"preserve\">" "</extract>"
+       
+-- | Returns a 'WikipediaPage' for the article with the given title.
+-- Returns a 'WikipediaPage' with all fields null in the event of an error.
+-- For error handling using 'Maybe' instead, use 'pageMaybe'.
+page :: String -> IO WikipediaPage
+page title = do
+  maybePg <- pageMaybe title
+  case maybePg of
+    Nothing -> return $ WikipediaPage "" "" "" ""
+    Just pg -> return pg
     
 -- | Returns a 'WikipediaPage' for the article with the given title.
 -- Errors are handled using 'Maybe' ('Nothing' is returned on error).
-page :: String -> IO (Maybe WikipediaPage)
-page title
+pageMaybe :: String -> IO (Maybe WikipediaPage)
+pageMaybe title
   | isInvalidTitle title = return Nothing
   | otherwise = do
     let queries = stdQueries ++ [ ("prop", "revisions")
@@ -110,8 +121,8 @@ page title
       ""      -> return Nothing
       content -> return . Just $ WikipediaPage title content timestamp queryURI
         where timestamp = head $ extractAllAttrValues results "timestamp"
-              queryURI = show $ queriesToURI queries
-
+              queryURI = show $ queriesToURI queries    
+    
 -- | Returns information regarding Wikipedia's text license (CC BY-SA) and
 -- the license used by Aether (MIT).
 licenses :: String
