@@ -16,8 +16,7 @@
 -- <http://www.mediawiki.org/wiki/API>.
 --
 -----------------------------------------------------------------------------
-module Aether ( licenses
-              , search
+module Aether ( search
               , suggest
               , random
               , summary
@@ -122,11 +121,4 @@ pageMaybe title
       content -> return . Just $ WikipediaPage title content pageID timestamp queryURI
         where pageID = head $ extractAllAttrValues results "pageid"
               timestamp = head $ extractAllAttrValues results "timestamp"
-              queryURI = show $ queriesToURI queries    
-    
--- | Returns information regarding Wikipedia's text license (CC BY-SA) and
--- the license used by Aether (MIT).
-licenses :: String
-licenses = "The text of Wikipedia is available under the \
-           \Creative Commons Attribution-ShareAlike 3.0 Unported License. \
-           \Aether is an open source library available under the MIT License."
+              queryURI = show $ queriesToURI queries
