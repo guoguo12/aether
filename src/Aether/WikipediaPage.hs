@@ -16,6 +16,8 @@ module Aether.WikipediaPage ( isRedirect
                             ) where
 
 import Data.List (isPrefixOf)
+import Aether.Parser (extractBetween, trim)
+import Aether.WebService (stdQueries, wikiRequest)
 
 -- | Represents a single Wikipedia page.
 data WikipediaPage = WikipediaPage { title :: String -- ^ Page title (with namespace prefix).
@@ -25,7 +27,20 @@ data WikipediaPage = WikipediaPage { title :: String -- ^ Page title (with names
                                    , queryURI :: String -- ^ URI of the API query used.
                                    } deriving (Show)
 
--- | Returns if the given 'WikipediaPage' is a hard redirect.
+-- | Returns if the given page is a hard redirect.
 isRedirect :: WikipediaPage -> Bool
 isRedirect = isPrefixOf "#REDIRECT [[" . content
 
+{-
+-- | Returns the HTML markup of the given page.
+contentHTML :: WikipediaPage -> IO String
+contentHTML pg = do
+  let queries = stdQueries ++ [ ("prop", "revisions")
+                              , ("rvprop", "content")
+                              , ("rvlimit", "1")
+                              , ("rvparse", "")
+                              , ("titles", title pg)
+                              ]
+  results <- wikiRequest queries
+  return . trim $ extractBetween results "xml:space=\"preserve\">" "</rev>"
+-}  
