@@ -35,6 +35,7 @@ isRedirect :: WikipediaPage -> Bool
 isRedirect = isPrefixOf "#REDIRECT [[" . content
 
 -- | Returns the URLs of the images on the given page.
+-- Works for up to 500 images.
 images :: WikipediaPage -> IO [String]
 images pg = do
   let queries = stdQueries ++ [ ("generator", "images")
@@ -47,7 +48,7 @@ images pg = do
   return $ extractAllAttrValues results " url"
   
 -- | Returns the URLs of the description pages for the images
--- on the given page.
+-- on the given page. Works for up to 500 images.
 imageDescs :: WikipediaPage -> IO [String]
 imageDescs pg = do
   let queries = stdQueries ++ [ ("generator", "images")
