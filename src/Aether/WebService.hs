@@ -60,7 +60,7 @@ queriesToRequest queries = Request { rqURI = queriesToURI queries
 wikiRequest :: [(String, String)] -> IO String
 wikiRequest queries = do
   let request = queriesToRequest queries
-  result <- simpleHTTP $ request
+  result <- simpleHTTP request
   case result of
     Left _         -> return ""
     Right response -> return $ rspBody response
