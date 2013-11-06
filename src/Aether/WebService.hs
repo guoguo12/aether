@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- |
--- Module    : Aether.WevService
+-- Module    : Aether.WebService
 -- Copyright : (c) Allen Guo 2013
 -- License   : MIT
 -- 
