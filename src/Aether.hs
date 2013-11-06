@@ -102,7 +102,7 @@ page :: String -> IO WikipediaPage
 page title = do
   maybePg <- pageMaybe title
   case maybePg of
-    Nothing -> return $ WikipediaPage "" "" "" ""
+    Nothing -> return $ WikipediaPage "" "" "" "" ""
     Just pg -> return pg
     
 -- | Returns a 'WikipediaPage' for the article with the given title.
@@ -119,8 +119,9 @@ pageMaybe title
     results <- wikiRequest queries
     case trim $ extractBetween results "xml:space=\"preserve\">" "</rev>" of
       ""      -> return Nothing
-      content -> return . Just $ WikipediaPage title content timestamp queryURI
-        where timestamp = head $ extractAllAttrValues results "timestamp"
+      content -> return . Just $ WikipediaPage title content pageID timestamp queryURI
+        where pageID = head $ extractAllAttrValues results "pageid"
+              timestamp = head $ extractAllAttrValues results "timestamp"
               queryURI = show $ queriesToURI queries    
     
 -- | Returns information regarding Wikipedia's text license (CC BY-SA) and

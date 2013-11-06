@@ -20,6 +20,7 @@ import Data.List (isPrefixOf)
 -- | Represents a single Wikipedia page.
 data WikipediaPage = WikipediaPage { title :: String -- ^ Page title (with namespace prefix).
                                    , content :: String -- ^ Raw contents (wiki markup).
+                                   , pageID :: String -- ^ Page ID.
                                    , lastEdit :: String -- ^ Timestamp of last edit.
                                    , queryURI :: String -- ^ URI of the API query used.
                                    } deriving (Show)
