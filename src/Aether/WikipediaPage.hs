@@ -12,11 +12,12 @@
 --
 -----------------------------------------------------------------------------
 module Aether.WikipediaPage ( isRedirect
+                            , sections
                             , WikipediaPage(..)
                             ) where
 
 import Data.List (isPrefixOf)
-import Aether.Parser (extractBetween, trim)
+import Aether.Parser (extractAllAttrValues, extractBetween, trim)
 import Aether.WebService (stdQueries, wikiRequest)
 
 -- | Represents a single Wikipedia page.
@@ -30,6 +31,17 @@ data WikipediaPage = WikipediaPage { title :: String -- ^ Page title (with names
 -- | Returns if the given page is a hard redirect.
 isRedirect :: WikipediaPage -> Bool
 isRedirect = isPrefixOf "#REDIRECT [[" . content
+
+-- | Returns the section titles of the given page.
+sections :: WikipediaPage -> IO [String]
+sections pg = do
+  let queries = [ ("format", "xml")
+                , ("action", "parse")
+                , ("prop", "sections")
+                , ("page", title pg)
+                ]
+  results <- wikiRequest queries
+  return $ extractAllAttrValues results "line"
 
 {-
 -- | Returns the HTML markup of the given page.
