@@ -65,9 +65,3 @@ wikiRequest queries = do
   case result of
     Left _         -> return ""
     Right response -> return $ rspBody response
-    
--- | Opens the Wikimedia donate page in an external web browser.
--- | Currently works on Windows only.
-donate :: IO ()
-donate = do
-  void $ system "explorer.exe http://donate.wikimedia.org"

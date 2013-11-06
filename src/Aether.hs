@@ -27,7 +27,7 @@ module Aether ( licenses
               ) where
 
 import Aether.Parser (extractBetween, extractAllAttrValues, trim)
-import Aether.WebService (donate, stdQueries, queriesToURI, wikiRequest)
+import Aether.WebService (stdQueries, queriesToURI, wikiRequest)
 import Aether.WikipediaPage
 
 -- TODO: Add additional tests for title validity
