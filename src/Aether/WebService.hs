@@ -15,8 +15,7 @@
 -- of type @[(String, String)]@.
 --
 -----------------------------------------------------------------------------
-module Aether.WebService ( donate
-                         , stdQueries
+module Aether.WebService ( stdQueries
                          , queriesToURI
                          , wikiRequest
                          ) where

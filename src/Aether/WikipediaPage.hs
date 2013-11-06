@@ -11,7 +11,9 @@
 -- Wikipedia pages and functions related to it.
 --
 -----------------------------------------------------------------------------
-module Aether.WikipediaPage ( isRedirect
+module Aether.WikipediaPage ( images
+                            , imageDescs
+                            , isRedirect
                             , sections
                             , WikipediaPage(..)
                             ) where
@@ -32,6 +34,31 @@ data WikipediaPage = WikipediaPage { title :: String -- ^ Page title (with names
 isRedirect :: WikipediaPage -> Bool
 isRedirect = isPrefixOf "#REDIRECT [[" . content
 
+-- | Returns the URLs of the images on the given page.
+images :: WikipediaPage -> IO [String]
+images pg = do
+  let queries = stdQueries ++ [ ("generator", "images")
+                              , ("gimlimit", "max")
+                              , ("prop", "imageinfo")
+                              , ("iiprop", "url")
+                              , ("titles", title pg)
+                              ]
+  results <- wikiRequest queries
+  return $ extractAllAttrValues results " url"
+  
+-- | Returns the URLs of the description pages for the images
+-- on the given page.
+imageDescs :: WikipediaPage -> IO [String]
+imageDescs pg = do
+  let queries = stdQueries ++ [ ("generator", "images")
+                              , ("gimlimit", "max")
+                              , ("prop", "imageinfo")
+                              , ("iiprop", "url")
+                              , ("titles", title pg)
+                              ]
+  results <- wikiRequest queries
+  return $ extractAllAttrValues results "descriptionurl"
+
 -- | Returns the section titles of the given page.
 sections :: WikipediaPage -> IO [String]
 sections pg = do
@@ -41,7 +68,7 @@ sections pg = do
                 , ("page", title pg)
                 ]
   results <- wikiRequest queries
-  return $ extractAllAttrValues results "line"
+  return $ extractAllAttrValues results "line"  
 
 {-
 -- | Returns the HTML markup of the given page.
