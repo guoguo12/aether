@@ -20,12 +20,13 @@ module Aether.WikipediaPage ( images
 
 import Data.Char (toUpper)                            
 import Data.List (isPrefixOf)
+import qualified Data.Text as T
 import Aether.Parser (extractAllAttrValues, extractBetween, trim)
 import Aether.WebService (stdQueries, wikiRequest)
 
 -- | Represents a single Wikipedia page.
 data WikipediaPage = WikipediaPage { title :: String -- ^ Page title (with namespace prefix).
-                                   , content :: String -- ^ Raw contents (wiki markup).
+                                   , content :: T.Text -- ^ Raw contents (wiki markup).
                                    , pageID :: String -- ^ Page ID.
                                    , lastEdit :: String -- ^ Timestamp of last edit.
                                    , queryURI :: String -- ^ URI of the API query used.
@@ -33,7 +34,7 @@ data WikipediaPage = WikipediaPage { title :: String -- ^ Page title (with names
 
 -- | Returns if the given page is a hard redirect.
 isRedirect :: WikipediaPage -> Bool
-isRedirect pg = isPrefixOf "#REDIRECT [[" $ map toUpper (content pg)
+isRedirect pg = T.isPrefixOf (T.pack "#REDIRECT [[") $ T.toUpper (content pg)
 
 -- | Returns the URLs of the images on the given page.
 -- Works for up to 500 images.

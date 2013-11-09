@@ -28,7 +28,8 @@ module Aether ( search
               , pageMaybe
               ) where
 
-import Data.Maybe (fromMaybe)              
+import Data.Maybe (fromMaybe)
+import Data.Text (empty, pack)
 import Aether.Parser (extractBetween, extractAllAttrValues, extractAttrValue, trim)
 import Aether.WebService (stdQueries, queriesToURI, wikiRequest)
 import Aether.WikipediaPage
@@ -139,7 +140,7 @@ page :: String -> IO WikipediaPage
 page title = do
   maybePg <- pageMaybe title
   case maybePg of
-    Nothing -> return $ WikipediaPage "" "" "" "" ""
+    Nothing -> return $ WikipediaPage "" empty "" "" ""
     Just pg -> return pg
     
 -- | Returns a 'WikipediaPage' for the article with the given title.
@@ -158,7 +159,8 @@ pageMaybe title
     let results = fromMaybe "" maybeResults
     case extractBetween "xml:space=\"preserve\">" "</rev>" results of
       ""      -> return Nothing
-      content -> return . Just $ WikipediaPage title content pageID timestamp queryURI
-        where pageID = extractAttrValue results "pageid"
+      content -> return . Just $ WikipediaPage title contentText pageID timestamp queryURI
+        where contentText = pack content
+              pageID = extractAttrValue results "pageid"
               timestamp = extractAttrValue results "timestamp"
               queryURI = show $ queriesToURI queries
