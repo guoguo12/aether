@@ -29,7 +29,7 @@ module Aether ( search
               ) where
 
 import Data.Maybe (fromMaybe)              
-import Aether.Parser (extractBetween, extractAllAttrValues, trim)
+import Aether.Parser (extractBetween, extractAllAttrValues, extractAttrValue, trim)
 import Aether.WebService (stdQueries, queriesToURI, wikiRequest)
 import Aether.WikipediaPage
 
@@ -81,11 +81,7 @@ suggestMaybe terms = do
                               , ("srlimit", "1")
                               ]
   maybeResults <- wikiRequest queries
-  case maybeResults of
-    Nothing      -> return Nothing
-    Just results -> do
-      let suggestions = extractAllAttrValues "suggestion" results
-      return . Just $ if null suggestions then "" else head suggestions    
+  return $ fmap (extractAttrValue "suggestion") maybeResults
 
 -- | Returns a list of random Wikipedia article titles.
 -- The given 'Int' determines the length of the list; up to 10
@@ -163,6 +159,6 @@ pageMaybe title
     case extractBetween "xml:space=\"preserve\">" "</rev>" results of
       ""      -> return Nothing
       content -> return . Just $ WikipediaPage title content pageID timestamp queryURI
-        where pageID = head $ extractAllAttrValues results "pageid"
-              timestamp = head $ extractAllAttrValues results "timestamp"
+        where pageID = extractAttrValue results "pageid"
+              timestamp = extractAttrValue results "timestamp"
               queryURI = show $ queriesToURI queries

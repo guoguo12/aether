@@ -13,6 +13,7 @@
 -----------------------------------------------------------------------------
 module Aether.Parser ( extractBetween
                      , extractAllAttrValues
+                     , extractAttrValue
                      , trim
                      ) where
 
@@ -41,6 +42,15 @@ stdRegex text regex =
 -- @start@ and @end@ as a string.
 extractBetween :: String -> String -> String -> String
 extractBetween start end text = stdRegex text $ start ++ "(.*)" ++ end
+
+-- | @extractAttrValue text attr@, where @text@ is a XML string, returns
+-- the value of the first instance of the XML attribute @attr@. Returns 
+-- an empty string If no instances of @attr@ exist in the given XML string.
+extractAttrValue :: String -> String -> String
+extractAttrValue attr text =
+  case extractAllAttrValues attr text of
+    [] -> ""
+    xs -> head xs
 
 -- | @extractAllAttrValues text attr@, where @text@ is a XML string, returns
 -- the values of all instances of the XML attribute @attr@.
