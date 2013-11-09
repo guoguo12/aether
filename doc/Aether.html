@@ -7,23 +7,38 @@ window.onload = function () {pageLoad();setSynopsis("mini_Aether.html");};
  generate random article titles, and more.
 </p><p>Aether wraps around the MediaWiki API. Learn more at
  <a href="http://www.mediawiki.org/wiki/API">http://www.mediawiki.org/wiki/API</a>.
-</p></div></div><div id="synopsis"><p id="control.syn" class="caption expander" onclick="toggleSection('syn')">Synopsis</p><ul id="section.syn" class="hide" onclick="toggleSection('syn')"><li class="src short"><a href="#v:licenses">licenses</a> :: String</li><li class="src short"><a href="#v:search">search</a> :: String -&gt; IO [String]</li><li class="src short"><a href="#v:suggest">suggest</a> :: String -&gt; IO String</li><li class="src short"><a href="#v:random">random</a> :: Int -&gt; IO [String]</li><li class="src short"><a href="#v:summary">summary</a> :: String -&gt; IO String</li><li class="src short"><a href="#v:summaryLines">summaryLines</a> :: Int -&gt; String -&gt; IO String</li><li class="src short"><a href="#v:page">page</a> :: String -&gt; IO <a href="Aether-WikipediaPage.html#t:WikipediaPage">WikipediaPage</a></li><li class="src short"><a href="#v:pageMaybe">pageMaybe</a> :: String -&gt; IO (Maybe <a href="Aether-WikipediaPage.html#t:WikipediaPage">WikipediaPage</a>)</li></ul></div><div id="interface"><h1>Documentation</h1><div class="top"><p class="src"><a name="v:licenses" class="def">licenses</a> :: String</p><div class="doc"><p>Returns information regarding Wikipedia's text license (CC BY-SA) and
- the license used by Aether (MIT).
-</p></div></div><div class="top"><p class="src"><a name="v:search" class="def">search</a> :: String -&gt; IO [String]</p><div class="doc"><p>Returns a list of up to 10 Wikipedia search results
- based on the given search terms.
+</p></div></div><div id="synopsis"><p id="control.syn" class="caption expander" onclick="toggleSection('syn')">Synopsis</p><ul id="section.syn" class="hide" onclick="toggleSection('syn')"><li class="src short"><a href="#v:search">search</a> :: String -&gt; IO [String]</li><li class="src short"><a href="#v:searchMaybe">searchMaybe</a> :: String -&gt; IO (Maybe [String])</li><li class="src short"><a href="#v:suggest">suggest</a> :: String -&gt; IO String</li><li class="src short"><a href="#v:suggestMaybe">suggestMaybe</a> :: String -&gt; IO (Maybe String)</li><li class="src short"><a href="#v:random">random</a> :: Int -&gt; IO [String]</li><li class="src short"><a href="#v:randomMaybe">randomMaybe</a> :: Int -&gt; IO (Maybe [String])</li><li class="src short"><a href="#v:summary">summary</a> :: String -&gt; IO String</li><li class="src short"><a href="#v:summaryMaybe">summaryMaybe</a> :: Int -&gt; String -&gt; IO (Maybe String)</li><li class="src short"><a href="#v:page">page</a> :: String -&gt; IO <a href="Aether-WikipediaPage.html#t:WikipediaPage">WikipediaPage</a></li><li class="src short"><a href="#v:pageMaybe">pageMaybe</a> :: String -&gt; IO (Maybe <a href="Aether-WikipediaPage.html#t:WikipediaPage">WikipediaPage</a>)</li></ul></div><div id="interface"><h1>Documentation</h1><div class="top"><p class="src"><a name="v:search" class="def">search</a> :: String -&gt; IO [String]</p><div class="doc"><p>Returns a list of up to 10 Wikipedia search results
+ based on the given search terms. For error handling using 
+ <code>Maybe</code>, use <code><a href="Aether.html#v:searchMaybe">searchMaybe</a></code>.
+</p></div></div><div class="top"><p class="src"><a name="v:searchMaybe" class="def">searchMaybe</a> :: String -&gt; IO (Maybe [String])</p><div class="doc"><p>Same as <code><a href="Aether.html#v:search">search</a></code>, except errors are handled using <code>Maybe</code>. 
+ <code>Nothing</code> is returned in the event of a network error.
 </p></div></div><div class="top"><p class="src"><a name="v:suggest" class="def">suggest</a> :: String -&gt; IO String</p><div class="doc"><p>Returns a suggestion based on the given search terms.
- Returns an empty string if no suggestion is available.
+ Returns an empty string if no suggestion is available, or
+ if a network error occurs. For error handling using <code>Maybe</code>
+ instead, use <code><a href="Aether.html#v:suggestMaybe">suggestMaybe</a></code>.
+</p></div></div><div class="top"><p class="src"><a name="v:suggestMaybe" class="def">suggestMaybe</a> :: String -&gt; IO (Maybe String)</p><div class="doc"><p>Same as <code><a href="Aether.html#v:suggest">suggest</a></code>, except errors are handled using <code>Maybe</code>. 
+ <code>Nothing</code> is returned in the event of a network error.
+ If no suggestion is available, then <code>Just &quot;&quot;</code> is returned.
 </p></div></div><div class="top"><p class="src"><a name="v:random" class="def">random</a> :: Int -&gt; IO [String]</p><div class="doc"><p>Returns a list of random Wikipedia article titles.
  The given <code>Int</code> determines the length of the list; up to 10
  titles can be fetched at once. The returned list is guaranteed
- to contain no duplicate titles.
+ to contain no duplicate titles. For error handling using <code>Maybe</code>,
+ use <code><a href="Aether.html#v:randomMaybe">randomMaybe</a></code>.
+</p></div></div><div class="top"><p class="src"><a name="v:randomMaybe" class="def">randomMaybe</a> :: Int -&gt; IO (Maybe [String])</p><div class="doc"><p>Same as <code><a href="Aether.html#v:random">random</a></code>, except errors are handled using <code>Maybe</code>. 
+ <code>Nothing</code> is returned in the event of a network error.
 </p></div></div><div class="top"><p class="src"><a name="v:summary" class="def">summary</a> :: String -&gt; IO String</p><div class="doc"><p>Returns a summary of the Wikipedia article with the given title.
- The summary will be about one line long.    
-</p></div></div><div class="top"><p class="src"><a name="v:summaryLines" class="def">summaryLines</a> :: Int -&gt; String -&gt; IO String</p><div class="doc"><p>Returns a summary of the Wikipedia article with the given title.
+ The summary will be about one line long. Returns an empty string
+ in the event of an error. For error handling using <code>Maybe</code> instead,
+ use <code><a href="Aether.html#v:summaryMaybe">summaryMaybe</a></code>.
+</p></div></div><div class="top"><p class="src"><a name="v:summaryMaybe" class="def">summaryMaybe</a> :: Int -&gt; String -&gt; IO (Maybe String)</p><div class="doc"><p>Returns a summary of the Wikipedia article with the given title.
  The given <code>Int</code> determines the maximum summary length, in lines.
+ Errors are handled using <code>Maybe</code>. <code>Nothing</code> is returned in the event
+ of a network error. However, if the given page does not exist,
+ <code>Just &quot;&quot;</code> will be returned.
 </p></div></div><div class="top"><p class="src"><a name="v:page" class="def">page</a> :: String -&gt; IO <a href="Aether-WikipediaPage.html#t:WikipediaPage">WikipediaPage</a></p><div class="doc"><p>Returns a <code><a href="Aether-WikipediaPage.html#t:WikipediaPage">WikipediaPage</a></code> for the article with the given title.
  Returns a <code><a href="Aether-WikipediaPage.html#t:WikipediaPage">WikipediaPage</a></code> with all fields null in the event of an error.
  For error handling using <code>Maybe</code> instead, use <code><a href="Aether.html#v:pageMaybe">pageMaybe</a></code>.
 </p></div></div><div class="top"><p class="src"><a name="v:pageMaybe" class="def">pageMaybe</a> :: String -&gt; IO (Maybe <a href="Aether-WikipediaPage.html#t:WikipediaPage">WikipediaPage</a>)</p><div class="doc"><p>Returns a <code><a href="Aether-WikipediaPage.html#t:WikipediaPage">WikipediaPage</a></code> for the article with the given title.
- Errors are handled using <code>Maybe</code> (<code>Nothing</code> is returned on error).
+ Errors are handled using <code>Maybe</code>. (<code>Nothing</code> is returned if the page
+ cannot be accessed or does not exist.)
 </p></div></div></div></div><div id="footer"><p>Produced by <a href="http://www.haskell.org/haddock/">Haddock</a> version 2.11.0</p></div></body></html>

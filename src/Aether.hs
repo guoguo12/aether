@@ -39,7 +39,8 @@ isInvalidTitle :: String -> Bool
 isInvalidTitle = null
 
 -- | Returns a list of up to 10 Wikipedia search results
--- based on the given search terms.
+-- based on the given search terms. For error handling using 
+-- 'Maybe', use 'searchMaybe'.
 search :: String -> IO [String]
 search terms = do
   maybeSearch <- searchMaybe terms
@@ -60,7 +61,9 @@ searchMaybe terms = do
   return $ fmap (extractAllAttrValues "title") maybeResults
 
 -- | Returns a suggestion based on the given search terms.
--- Returns an empty string if no suggestion is available.
+-- Returns an empty string if no suggestion is available, or
+-- if a network error occurs. For error handling using 'Maybe'
+-- instead, use 'suggestMaybe'.
 suggest :: String -> IO String
 suggest terms = do
   maybeSuggest <- suggestMaybe terms
@@ -68,7 +71,7 @@ suggest terms = do
   
 -- | Same as 'suggest', except errors are handled using 'Maybe'. 
 -- 'Nothing' is returned in the event of a network error.
--- If no suggestion is available, then @Just ""@ is returned.
+-- If no suggestion is available, then @Just \"\"@ is returned.
 suggestMaybe :: String -> IO (Maybe String)
 suggestMaybe terms = do
   let queries = stdQueries ++ [ ("list", "search")
@@ -87,7 +90,8 @@ suggestMaybe terms = do
 -- | Returns a list of random Wikipedia article titles.
 -- The given 'Int' determines the length of the list; up to 10
 -- titles can be fetched at once. The returned list is guaranteed
--- to contain no duplicate titles.
+-- to contain no duplicate titles. For error handling using 'Maybe',
+-- use 'randomMaybe'.
 random :: Int -> IO [String]
 random pages = do
   maybeRandomPages <- randomMaybe pages
@@ -119,7 +123,7 @@ summary title = do
 -- The given 'Int' determines the maximum summary length, in lines.
 -- Errors are handled using 'Maybe'. 'Nothing' is returned in the event
 -- of a network error. However, if the given page does not exist,
--- @Just ""@ will be returned.
+-- @Just \"\"@ will be returned.
 summaryMaybe :: Int -> String -> IO (Maybe String)
 summaryMaybe lines title
   | isInvalidTitle title = return $ Just ""

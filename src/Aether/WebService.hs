@@ -28,7 +28,7 @@ import Network.HTTP.Headers (mkHeader, Header, HeaderName(..))
 import System.Cmd (system)
 
 -- | Common query arguments that should be included in most API queries.
--- Defined as @stdQueries = [("format", "xml"), ("action", "query")]@.
+-- Defined as @stdQueries = [(\"format\", \"xml\"), (\"action\", \"query\")]@.
 -- Consult the MediaWiki API for query parameter details.
 stdQueries :: [(String, String)]
 stdQueries = [("format", "xml"), ("action", "query")]
