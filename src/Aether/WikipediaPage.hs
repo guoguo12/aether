@@ -36,7 +36,7 @@ isRedirect = isPrefixOf "#REDIRECT [[" . content
 
 -- | Returns the URLs of the images on the given page.
 -- Works for up to 500 images.
-images :: WikipediaPage -> IO [String]
+images :: WikipediaPage -> IO (Maybe [String])
 images pg = do
   let queries = stdQueries ++ [ ("generator", "images")
                               , ("gimlimit", "max")
@@ -44,12 +44,12 @@ images pg = do
                               , ("iiprop", "url")
                               , ("titles", title pg)
                               ]
-  results <- wikiRequest queries
-  return $ extractAllAttrValues results " url"
+  maybeResults <- wikiRequest queries
+  return $ fmap (extractAllAttrValues " url") maybeResults
   
 -- | Returns the URLs of the description pages for the images
 -- on the given page. Works for up to 500 images.
-imageDescs :: WikipediaPage -> IO [String]
+imageDescs :: WikipediaPage -> IO (Maybe [String])
 imageDescs pg = do
   let queries = stdQueries ++ [ ("generator", "images")
                               , ("gimlimit", "max")
@@ -57,19 +57,19 @@ imageDescs pg = do
                               , ("iiprop", "url")
                               , ("titles", title pg)
                               ]
-  results <- wikiRequest queries
-  return $ extractAllAttrValues results "descriptionurl"
+  maybeResults <- wikiRequest queries
+  return $ fmap (extractAllAttrValues "descriptionurl") maybeResults
 
 -- | Returns the section titles of the given page.
-sections :: WikipediaPage -> IO [String]
+sections :: WikipediaPage -> IO (Maybe [String])
 sections pg = do
   let queries = [ ("format", "xml")
                 , ("action", "parse")
                 , ("prop", "sections")
                 , ("page", title pg)
                 ]
-  results <- wikiRequest queries
-  return $ extractAllAttrValues results "line"  
+  maybeResults <- wikiRequest queries
+  return $ fmap (extractAllAttrValues "line") maybeResults
 
 {-
 -- | Returns the HTML markup of the given page.

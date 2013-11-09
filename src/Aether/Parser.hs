@@ -40,11 +40,11 @@ stdRegex text regex =
 -- | @extractBetween text start end@ will return the portion of @text@ between
 -- @start@ and @end@ as a string.
 extractBetween :: String -> String -> String -> String
-extractBetween text start end = stdRegex text $ start ++ "(.*)" ++ end
+extractBetween start end text = stdRegex text $ start ++ "(.*)" ++ end
 
 -- | @extractAllAttrValues text attr@, where @text@ is a XML string, returns
 -- the values of all instances of the XML attribute @attr@.
 extractAllAttrValues :: String -> String -> [String]
-extractAllAttrValues text attr = nonNull $ map extract chunks where
+extractAllAttrValues attr text = nonNull $ map extract chunks where
   extract = flip stdRegex (attr ++ "=\"([^\"]*)\"")
   chunks = splitRegex (mkRegex "<") text

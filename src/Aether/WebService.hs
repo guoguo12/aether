@@ -56,11 +56,12 @@ queriesToRequest queries = Request { rqURI = queriesToURI queries
                                    }
 
 -- | Sends an API query using the given query arguments and returns
--- the result as a string.
-wikiRequest :: [(String, String)] -> IO String
+-- the result as a string wrapped by 'Maybe'. ('Nothing' is returned
+-- in the event of a HTTP request error.)
+wikiRequest :: [(String, String)] -> IO (Maybe String)
 wikiRequest queries = do
   let request = queriesToRequest queries
   result <- simpleHTTP request
   case result of
-    Left _         -> return ""
-    Right response -> return $ rspBody response
+    Left _         -> return Nothing
+    Right response -> return $ Just (rspBody response)

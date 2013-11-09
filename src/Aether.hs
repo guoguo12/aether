@@ -17,14 +17,18 @@
 --
 -----------------------------------------------------------------------------
 module Aether ( search
+              , searchMaybe
               , suggest
+              , suggestMaybe
               , random
+              , randomMaybe
               , summary
-              , summaryLines
+              , summaryMaybe
               , page
               , pageMaybe
               ) where
 
+import Data.Maybe (fromMaybe)              
 import Aether.Parser (extractBetween, extractAllAttrValues, trim)
 import Aether.WebService (stdQueries, queriesToURI, wikiRequest)
 import Aether.WikipediaPage
@@ -38,61 +42,95 @@ isInvalidTitle = null
 -- based on the given search terms.
 search :: String -> IO [String]
 search terms = do
+  maybeSearch <- searchMaybe terms
+  case maybeSearch of
+    Nothing -> return []
+    Just xs -> return xs
+  
+-- | Same as 'search', except errors are handled using 'Maybe'. 
+-- 'Nothing' is returned in the event of a network error.
+searchMaybe :: String -> IO (Maybe [String])
+searchMaybe terms = do
   let queries = stdQueries ++ [ ("list", "search")
                               , ("srsearch", terms)
                               , ("srlimit", "10")
                               , ("srprop", "")
                               ]
-  results <- wikiRequest queries
-  return $ extractAllAttrValues results "title"
+  maybeResults <- wikiRequest queries
+  return $ fmap (extractAllAttrValues "title") maybeResults
 
 -- | Returns a suggestion based on the given search terms.
 -- Returns an empty string if no suggestion is available.
 suggest :: String -> IO String
 suggest terms = do
+  maybeSuggest <- suggestMaybe terms
+  return $ fromMaybe "" maybeSuggest
+  
+-- | Same as 'suggest', except errors are handled using 'Maybe'. 
+-- 'Nothing' is returned in the event of a network error.
+-- If no suggestion is available, then @Just ""@ is returned.
+suggestMaybe :: String -> IO (Maybe String)
+suggestMaybe terms = do
   let queries = stdQueries ++ [ ("list", "search")
                               , ("srsearch", terms)
                               , ("srinfo", "suggestion")
                               , ("srprop", "")
                               , ("srlimit", "1")
                               ]
-  results <- wikiRequest queries
-  let suggestions = extractAllAttrValues results "suggestion"
-  return $ if null suggestions then "" else head suggestions
+  maybeResults <- wikiRequest queries
+  case maybeResults of
+    Nothing      -> return Nothing
+    Just results -> do
+      let suggestions = extractAllAttrValues "suggestion" results
+      return . Just $ if null suggestions then "" else head suggestions    
 
 -- | Returns a list of random Wikipedia article titles.
 -- The given 'Int' determines the length of the list; up to 10
 -- titles can be fetched at once. The returned list is guaranteed
 -- to contain no duplicate titles.
 random :: Int -> IO [String]
-random pages
-  | pages <= 0 = return []
+random pages = do
+  maybeRandomPages <- randomMaybe pages
+  return $ fromMaybe [] maybeRandomPages
+    
+-- | Same as 'random', except errors are handled using 'Maybe'. 
+-- 'Nothing' is returned in the event of a network error.
+randomMaybe :: Int -> IO (Maybe [String])
+randomMaybe pages
+  | pages <= 0 = return $ Just []
   | otherwise = do
     let queries = stdQueries ++ [ ("list", "random")
                                 , ("rnnamespace", "0")
                                 , ("rnlimit", show pages)
                                 ]
-    results <- wikiRequest queries
-    return $ extractAllAttrValues results "title"
-
+    maybeResults <- wikiRequest queries
+    return $ fmap (extractAllAttrValues "title") maybeResults
+    
 -- | Returns a summary of the Wikipedia article with the given title.
--- The summary will be about one line long.    
+-- The summary will be about one line long. Returns an empty string
+-- in the event of an error. For error handling using 'Maybe' instead,
+-- use 'summaryMaybe'.
 summary :: String -> IO String
-summary = summaryLines 1
+summary title = do
+  maybeSummary <- summaryMaybe 1 title
+  return $ fromMaybe "" maybeSummary
     
 -- | Returns a summary of the Wikipedia article with the given title.
 -- The given 'Int' determines the maximum summary length, in lines.
-summaryLines :: Int -> String -> IO String    
-summaryLines lines title
-  | isInvalidTitle title = return ""
+-- Errors are handled using 'Maybe'. 'Nothing' is returned in the event
+-- of a network error. However, if the given page does not exist,
+-- @Just ""@ will be returned.
+summaryMaybe :: Int -> String -> IO (Maybe String)
+summaryMaybe lines title
+  | isInvalidTitle title = return $ Just ""
   | otherwise = do
     let queries = stdQueries ++ [ ("prop", "extracts")
                                 , ("explaintext", "")
                                 , ("titles", title)
                                 , ("exsentences", show lines)
                                 ]
-    results <- wikiRequest queries
-    return $ extractBetween results "xml:space=\"preserve\">" "</extract>"
+    maybeResults <- wikiRequest queries
+    return $ fmap (extractBetween "xml:space=\"preserve\">" "</extract>") maybeResults
        
 -- | Returns a 'WikipediaPage' for the article with the given title.
 -- Returns a 'WikipediaPage' with all fields null in the event of an error.
@@ -105,7 +143,8 @@ page title = do
     Just pg -> return pg
     
 -- | Returns a 'WikipediaPage' for the article with the given title.
--- Errors are handled using 'Maybe' ('Nothing' is returned on error).
+-- Errors are handled using 'Maybe'. ('Nothing' is returned if the page
+-- cannot be accessed or does not exist.)
 pageMaybe :: String -> IO (Maybe WikipediaPage)
 pageMaybe title
   | isInvalidTitle title = return Nothing
@@ -115,8 +154,9 @@ pageMaybe title
                                 , ("rvlimit", "1")
                                 , ("titles", title)
                                 ]
-    results <- wikiRequest queries
-    case trim $ extractBetween results "xml:space=\"preserve\">" "</rev>" of
+    maybeResults <- wikiRequest queries
+    let results = fromMaybe "" maybeResults
+    case extractBetween "xml:space=\"preserve\">" "</rev>" results of
       ""      -> return Nothing
       content -> return . Just $ WikipediaPage title content pageID timestamp queryURI
         where pageID = head $ extractAllAttrValues results "pageid"
