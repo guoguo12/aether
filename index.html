@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Aether by guoguo12</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Aether</h1>
+        <p>A simple Haskell API for finding and accessing data from Wikipedia.</p>
+        <p class="view"><a href="https://github.com/guoguo12/aether">View the Project on GitHub <small>guoguo12/aether</small></a></p>
+        <ul>
+          <li><a href="https://github.com/guoguo12/aether/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/guoguo12/aether/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/guoguo12/aether">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="aether" class="anchor" href="#aether"><span class="octicon octicon-link"></span></a>Aether</h1>
+
+<p><strong>Aether</strong> is simple Haskell API for finding and accessing data from Wikipedia.</p>
+
+<p>Search Wikipedia, fetch search suggestions, get article summaries, and more!
+Aether puts the power of the <a href="http://www.mediawiki.org/wiki/API">MediaWiki API</a> at your fingertips.</p>
+
+<h2>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h2>
+
+<p>Let's play around with Aether in <a href="http://www.haskell.org/haskellwiki/GHC/GHCi">GHCi</a>. 
+First, let's import Aether.</p>
+
+<div class="highlight highlight-Haskell"><pre><span class="nf">ghci</span><span class="o">&gt;</span> <span class="kr">import</span> <span class="nn">Aether</span>
+</pre></div>
+
+<p>Let's try out some basic Aether functions.</p>
+
+<div class="highlight highlight-Haskell"><pre><span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">summary</span> <span class="s">"Blue"</span>
+<span class="s">"Blue is the colour of the clear sky and the deep sea. "</span>
+
+<span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">search</span> <span class="s">"entropy law"</span>
+<span class="p">[</span><span class="s">"Second law of thermodynamics"</span><span class="p">,</span><span class="s">"Entropy"</span><span class="p">,</span><span class="s">"Laws of thermodynamics"</span><span class="p">,</span><span class="s">"Thermodynami</span>
+<span class="s">cs"</span><span class="p">,</span><span class="s">"Non-equilibrium thermodynamics"</span><span class="p">,</span><span class="s">"Nicholas Georgescu-Roegen"</span><span class="p">,</span><span class="s">"Statistical me</span>
+<span class="s">chanics"</span><span class="p">,</span><span class="s">"Third law of thermodynamics"</span><span class="p">,</span><span class="s">"Ludwig Boltzmann"</span><span class="p">,</span><span class="s">"Fluctuation theorem"</span><span class="p">]</span>
+
+<span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">suggest</span> <span class="s">"Pysics"</span>
+<span class="p">[</span><span class="s">"Physics"</span><span class="p">]</span>
+</pre></div>
+
+<p>That was easy!</p>
+
+<p>The <code>WikipediaPage</code> data type represents an individual Wikipedia page.
+Let's use the <code>page</code> function to fetch a <code>WikipediaPage</code> value.</p>
+
+<div class="highlight highlight-Haskell"><pre><span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">pg</span> <span class="ow">&lt;-</span> <span class="n">page</span> <span class="s">"Computer science"</span>
+</pre></div>
+
+<p>There are a variety of functions that operate on <code>WikipediaPage</code> values.</p>
+
+<div class="highlight highlight-Haskell"><pre><span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">title</span> <span class="n">pg</span>
+<span class="s">"Computer science"</span>
+
+<span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">lastEdit</span> <span class="n">pg</span>
+<span class="s">"2013-11-04T04:33:42Z"</span>
+
+<span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">isRedirect</span> <span class="n">pg</span>
+<span class="kt">False</span>
+
+<span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">take</span> <span class="mi">175</span> <span class="o">$</span> <span class="n">content</span> <span class="n">pg</span>
+<span class="s">"'''Computer science''' (abbreviated '''CS''' or '''CompSci''') is the [[science</span>
+<span class="s">|scientific]] and practical approach to [[computation]] and its applications. It</span>
+<span class="s"> is the systemat"</span>
+</pre></div>
+
+<p>Aether has many more features—and many more to come!
+See below for installation and contribution information.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>After downloading/cloning the source repository,
+install Aether from the main directory using <a href="http://www.haskell.org/haskellwiki/Cabal-Install">cabal-install</a>:</p>
+
+<pre><code>$ cabal install
+</code></pre>
+
+<h2>
+<a name="contributions" class="anchor" href="#contributions"><span class="octicon octicon-link"></span></a>Contributions</h2>
+
+<p>Aether is a work-in-progress. Pull requests are most certainly welcome!</p>
+
+<h2>
+<a name="notes-and-credits" class="anchor" href="#notes-and-credits"><span class="octicon octicon-link"></span></a>Notes and credits</h2>
+
+<ul>
+<li>Aether is designed to be simple and easy to use. Developers in need of a complete Haskell binding to the MediaWiki API should consult the <a href="http://hackage.haskell.org/package/mediawiki">mediawiki</a> package.</li>
+<li>Aether is licensed under the MIT License. See the <code>LICENSE</code> file for details.</li>
+<li>Aether is substantially based on the <a href="http://github.com/goldsmith/Wikipedia">goldsmith/Wikipedia</a> Python library.</li>
+</ul>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/guoguo12">guoguo12</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
