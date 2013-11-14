@@ -28,7 +28,7 @@ cs","Non-equilibrium thermodynamics","Nicholas Georgescu-Roegen","Statistical me
 chanics","Third law of thermodynamics","Ludwig Boltzmann","Fluctuation theorem"]
 
 ghci> suggest "Pysics"
-["Physics"]
+"Physics"
 ```
 
 That was easy!
