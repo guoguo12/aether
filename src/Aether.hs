@@ -161,6 +161,6 @@ pageMaybe title
       ""      -> return Nothing
       content -> return . Just $ WikipediaPage title contentText pageID timestamp queryURI
         where contentText = pack content
-              pageID = extractAttrValue results "pageid"
-              timestamp = extractAttrValue results "timestamp"
+              pageID = extractAttrValue "pageid" results
+              timestamp = extractAttrValue "timestamp" results
               queryURI = show $ queriesToURI queries
