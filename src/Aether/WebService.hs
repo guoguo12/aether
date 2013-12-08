@@ -44,7 +44,7 @@ queriesToURI queries = URI { uriScheme = "http:"
 -- | Standard HTTP headers for use in networking. Currently contains Aether's
 -- custom User-Agent: @Aether 0.1 (https://github.com/guoguo12/aether)@.
 queryHeaders :: [Header]
-queryHeaders = [mkHeader HdrUserAgent "Aether 0.1 (https://github.com/guoguo12/aether)"]
+queryHeaders = [mkHeader HdrUserAgent "Aether/0.1 (https://github.com/guoguo12/aether)"]
 
 -- | Returns a API query 'Request' based on the given query arguments.
 queriesToRequest :: [(String, String)] -> Request String
