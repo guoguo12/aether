@@ -25,7 +25,6 @@ import Network.URI (URI(..), URIAuth(..))
 import Network.HTTP (simpleHTTP)
 import Network.HTTP.Base (rspBody, urlEncodeVars, Request(..), RequestMethod(..))
 import Network.HTTP.Headers (mkHeader, Header, HeaderName(..))
-import System.Cmd (system)
 
 -- | Common query arguments that should be included in most API queries.
 -- Defined as @stdQueries = [(\"format\", \"xml\"), (\"action\", \"query\")]@.
